@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import Link from "next/link"
+
 // import './index.css';
 //import {styles} from "./layout-rubidex.css"
 import {
@@ -33,11 +35,11 @@ const items: MenuItem[] = [
   // getItem('Option 1', '1', <PieChartOutlined />),
   // getItem('Option 2', '2', <DesktopOutlined />),
   getItem('Admin', 'sub1', <UserOutlined />, [
-    getItem('Create blockset', '3'),
+    getItem(<Link href="/createTable">Create Blockset</Link>, '3'),
     getItem('Placeholder', '4'),
   ]),
   getItem('Standard user', 'sub2', <TeamOutlined />, [
-    getItem('Create block', '6'), 
+    getItem(<Link href="/insert">Create Block</Link>, '6', ), 
     getItem('Placeholder 2', '8')
   ]),
   // getItem('Files', '9', <FileOutlined />),
@@ -53,7 +55,9 @@ const LayoutRubidex: React.FC<{ children: any }> = (props) => {
     <Layout style={{ minHeight: '100vh' }}>
       <Sider collapsible collapsed={collapsed} onCollapse={(value) => setCollapsed(value)}>
         <div style={{ height: 32, margin: 16, background: 'rgba(255, 255, 255, 0)' }}>
-          <img src="/assets/rubidex-logo-nav.svg" alt="rubidex-logo" /> 
+          <Link href="/">
+            <img src="/assets/rubidex-logo-nav.svg" alt="rubidex-logo" />
+          </Link>
         </div>
         <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" items={items} />
       </Sider>

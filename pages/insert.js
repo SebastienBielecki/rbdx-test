@@ -6,9 +6,6 @@ import { useState} from "react"
 const Insert = () => {
 
     const [confirmation, setConfirmation] = useState({})
-    console.log({confirmation});
-
-    console.log("insert page re-rendering");
 
     async function postData(url = 'http://localhost:3000/api/insert', data = {}) {
         // Default options are marked with *
@@ -55,15 +52,10 @@ const Insert = () => {
       /* eslint-enable no-template-curly-in-string */
       
       const onFinish = async ({product}) => {
-        console.log(product);
-        const insertEndpoint = "./api/insert"
-        console.log({insertEndpoint});
         const result = await postData("./api/insert", product)
         setConfirmation(result)
-      };
+      }
     
-      console.log("Hello insert page");
-      console.log(__dirname);
 
     return <>
         <h2>Insert a product</h2>
