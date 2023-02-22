@@ -56,11 +56,14 @@ const Insert = () => {
       
       const onFinish = async ({product}) => {
         console.log(product);
-        const result = await postData('http://localhost:3000/api/insert', product)
+        const insertEndpoint = "./api/insert"
+        console.log({insertEndpoint});
+        const result = await postData("./api/insert", product)
         setConfirmation(result)
       };
-
-   
+    
+      console.log("Hello insert page");
+      console.log(__dirname);
 
     return <>
         <h2>Insert a product</h2>
