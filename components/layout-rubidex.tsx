@@ -1,12 +1,6 @@
 import React, { useState } from 'react';
 import Link from "next/link"
-import {
-  // DesktopOutlined,
-  // FileOutlined,
-  // PieChartOutlined,
-  TeamOutlined,
-  UserOutlined,
-} from '@ant-design/icons';
+import { TeamOutlined, UserOutlined } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
 import { Layout, Menu, theme } from 'antd';
 
@@ -29,8 +23,6 @@ function getItem(
 }
 
 const items: MenuItem[] = [
-  // getItem('Option 1', '1', <PieChartOutlined />),
-  // getItem('Option 2', '2', <DesktopOutlined />),
   getItem('Admin', 'sub1', <UserOutlined />, [
     getItem(<Link href="/createTable">Create Blockset</Link>, '3'),
     getItem('Placeholder', '4'),
@@ -39,7 +31,6 @@ const items: MenuItem[] = [
     getItem(<Link href="/insert">Create Block</Link>, '6', ), 
     getItem('Placeholder 2', '8')
   ]),
-  // getItem('Files', '9', <FileOutlined />),
 ];
 
 const LayoutRubidex: React.FC<{ children: any }> = (props) => {
@@ -60,18 +51,10 @@ const LayoutRubidex: React.FC<{ children: any }> = (props) => {
       </Sider>
       <Layout className="site-layout">
         <Header style={{ padding: 0, background: 'rgba(0,21,42)' }}>
-          {/* <h2 className='header-text' style={{color: "white"}}>some text</h2> */}
           <h2 className='header-text' style={{color: "white"}}></h2>
         </Header>
         <Content style={{ margin: '0 16px' }}>
           {props.children}
-          {/* <Breadcrumb style={{ margin: '16px 0' }}>
-            <Breadcrumb.Item>User</Breadcrumb.Item>
-            <Breadcrumb.Item>Bill</Breadcrumb.Item>
-          </Breadcrumb>
-          <div style={{ padding: 24, minHeight: 360, background: colorBgContainer }}>
-            Bill is a cat.
-          </div> */}
         </Content>
         <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
       </Layout>

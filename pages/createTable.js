@@ -4,15 +4,13 @@ import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
 import { Button, Form, Input, Space } from 'antd';
 
 import { useState} from "react"
+import Confirmation from '../components/confirmation';
 import styles from "../styles/createTable.module.css"
 
 const Insert = () => {
 
     const [confirmation, setConfirmation] = useState({})
     const [tableName, setTableName] = useState(null)
-    console.log({confirmation});
-
-    console.log("create table page re-rendering");
 
     async function postData(url = '/api/createTable', data = {}) {
         // Default options are marked with *
@@ -30,8 +28,6 @@ const Insert = () => {
           body: JSON.stringify(data) // body data type must match "Content-Type" header
         });
         const result = await response.json()
-        console.log(result);
-        setConfirmation(result)
         //return response.json(); // parses JSON response into native JavaScript objects
         return result
       }
@@ -43,7 +39,7 @@ const Insert = () => {
         wrapperCol: {
           span: 16,
         },
-      };
+    };
       
       /* eslint-disable no-template-curly-in-string */
       const validateMessages = {
@@ -64,24 +60,22 @@ const Insert = () => {
       //   setConfirmation(result)
       // };
 
-      const onFinish = async (values) => {
-        console.log('Received values of form:', values);
+    const onFinish = async (values) => {
         const datatoSend = {
           tableName,
-          fields: {...values}
+          fields: values
         }
         const result = await postData('/api/createTable', datatoSend)
-        console.log(result);
-      };
+        setConfirmation(result)
+    }
 
-      const onFinishTableName = (values) => {
-        console.log('Success:', values);
+    const onFinishTableName = (values) => {
         setTableName(values.tableName)
-      };
+    }
       
-      const onFinishFailed = (errorInfo) => {
+    const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
-      };
+    }
 
    
 
@@ -145,10 +139,12 @@ const Insert = () => {
             </Button>
           </Form.Item>
         </Form>}
-        
-        
+        <Confirmation
+          system="MongoDb"
+          success={true}
+          message={JSON.stringify(confirmation)}
+        ></Confirmation>
     </>
-    
 }
 
 export default Insert

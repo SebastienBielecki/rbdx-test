@@ -1,5 +1,5 @@
 
-import { Button, Form, Input, InputNumber, message, notification } from 'antd';
+import { Button, Form, Input, InputNumber } from 'antd';
 
 import { useEffect, useState} from "react"
 import Confirmation from '../components/confirmation';
@@ -8,7 +8,6 @@ const Insert = () => {
 
     const [confirmationMongo, setConfirmationMongo] = useState({})
     const [confirmationRubidex, setConfirmationRubidex] = useState({})
-    const [alert, setAlert] = useState(false)
     const [visibleMongo, setVisibleMongo] = useState(false)
     const [visibleRubidex, setVisibleRubidex] = useState(false)
 
@@ -28,9 +27,6 @@ const Insert = () => {
           body: JSON.stringify(data) // body data type must match "Content-Type" header
         });
         const result = await response.json()
-        console.log(result);
-        //setConfirmationMongo(result)
-        //return response.json(); // parses JSON response into native JavaScript objects
         return result
       }
 
@@ -71,13 +67,6 @@ const Insert = () => {
       const onFinish = async ({product}) => {
         sendToRubidex(product)
         sendToMongo(product)
-        
-        // const resultMongo = await postData("./api/insert", product)
-        // setConfirmationMongo(resultMongo)
-        // setVisibleMongo(true)
-        // const resultRubidex = await postData("./api/rubidex/insert", product)
-        // setConfirmationRubidex(resultRubidex)
-        // setVisibleRubidex(true)
       }
 
       useEffect(() => {
@@ -100,7 +89,7 @@ const Insert = () => {
     
 
     return <>
-        <h2>Insert a product</h2>
+        <h2>Insert a record</h2>
         <Form
             {...layout}
             name="nest-messages"
@@ -160,15 +149,11 @@ const Insert = () => {
           system="MongoDb"
           success={confirmationMongo.acknowledged}
           message={`Inserted Id: ${confirmationMongo.insertedId}`}
-
-        
         ></Confirmation>}
         {visibleRubidex && <Confirmation
           system="Rubidex"
           success={confirmationRubidex.acknowledged}
           message={`Rudidex received the following object: ${JSON.stringify(confirmationRubidex.receivedObject)}`}
-
-        
         ></Confirmation>}
     </>
     
