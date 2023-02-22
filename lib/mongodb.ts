@@ -28,6 +28,7 @@
 // export default clientPromise
 
 import { MongoClient } from 'mongodb'
+//import "global.d.ts"
 
 if (!process.env.MONGODB_URI) {
   throw new Error('Invalid/Missing environment variable: "MONGODB_URI"')

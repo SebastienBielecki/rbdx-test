@@ -2,15 +2,14 @@ import React, { useState } from 'react';
 // import './index.css';
 //import {styles} from "./layout-rubidex.css"
 import {
-  DesktopOutlined,
-  FileOutlined,
-  PieChartOutlined,
+  // DesktopOutlined,
+  // FileOutlined,
+  // PieChartOutlined,
   TeamOutlined,
   UserOutlined,
 } from '@ant-design/icons';
 import type { MenuProps } from 'antd';
-import { Breadcrumb, Layout, Menu, theme } from 'antd';
-import RubidexLogo from "../public/assets/rubidex-logo-nav.svg"
+import { Layout, Menu, theme } from 'antd';
 
 const { Header, Content, Footer, Sider } = Layout;
 
@@ -44,7 +43,7 @@ const items: MenuItem[] = [
   // getItem('Files', '9', <FileOutlined />),
 ];
 
-const LayoutRubidex: React.FC = ({children}) => {
+const LayoutRubidex: React.FC<{ children: any }> = (props) => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
@@ -63,7 +62,7 @@ const LayoutRubidex: React.FC = ({children}) => {
           <h2 className='header-text' style={{color: "white"}}>some text</h2>
         </Header>
         <Content style={{ margin: '0 16px' }}>
-          {children}
+          {props.children}
           {/* <Breadcrumb style={{ margin: '16px 0' }}>
             <Breadcrumb.Item>User</Breadcrumb.Item>
             <Breadcrumb.Item>Bill</Breadcrumb.Item>
