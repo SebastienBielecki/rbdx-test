@@ -1,8 +1,5 @@
 import React, { useState } from 'react';
 import Link from "next/link"
-
-// import './index.css';
-//import {styles} from "./layout-rubidex.css"
 import {
   // DesktopOutlined,
   // FileOutlined,
@@ -63,7 +60,8 @@ const LayoutRubidex: React.FC<{ children: any }> = (props) => {
       </Sider>
       <Layout className="site-layout">
         <Header style={{ padding: 0, background: 'rgba(0,21,42)' }}>
-          <h2 className='header-text' style={{color: "white"}}>some text</h2>
+          {/* <h2 className='header-text' style={{color: "white"}}>some text</h2> */}
+          <h2 className='header-text' style={{color: "white"}}></h2>
         </Header>
         <Content style={{ margin: '0 16px' }}>
           {props.children}

@@ -1,11 +1,16 @@
 
-import { Button, Form, Input, InputNumber } from 'antd';
+import { Button, Form, Input, InputNumber, message, notification } from 'antd';
 
-import { useState} from "react"
+import { useEffect, useState} from "react"
+import Confirmation from '../components/confirmation';
 
 const Insert = () => {
 
-    const [confirmation, setConfirmation] = useState({})
+    const [confirmationMongo, setConfirmationMongo] = useState({})
+    const [confirmationRubidex, setConfirmationRubidex] = useState({})
+    const [alert, setAlert] = useState(false)
+    const [visibleMongo, setVisibleMongo] = useState(false)
+    const [visibleRubidex, setVisibleRubidex] = useState(false)
 
     async function postData(url = 'http://localhost:3000/api/insert', data = {}) {
         // Default options are marked with *
@@ -24,7 +29,7 @@ const Insert = () => {
         });
         const result = await response.json()
         console.log(result);
-        setConfirmation(result)
+        //setConfirmationMongo(result)
         //return response.json(); // parses JSON response into native JavaScript objects
         return result
       }
@@ -50,11 +55,48 @@ const Insert = () => {
         // },
       };
       /* eslint-enable no-template-curly-in-string */
+
+      const sendToMongo = async (product) => {
+        const resultMongo = await postData("./api/insert", product)
+        setConfirmationMongo(resultMongo)
+        setVisibleMongo(true)
+      }
+
+      const sendToRubidex = async (product) => {
+        const resultRubidex = await postData("./api/rubidex/insert", product)
+        setConfirmationRubidex(resultRubidex)
+        setVisibleRubidex(true)
+      }
       
       const onFinish = async ({product}) => {
-        const result = await postData("./api/insert", product)
-        setConfirmation(result)
+        sendToRubidex(product)
+        sendToMongo(product)
+        
+        // const resultMongo = await postData("./api/insert", product)
+        // setConfirmationMongo(resultMongo)
+        // setVisibleMongo(true)
+        // const resultRubidex = await postData("./api/rubidex/insert", product)
+        // setConfirmationRubidex(resultRubidex)
+        // setVisibleRubidex(true)
       }
+
+      useEffect(() => {
+        const timeoutMongo = setTimeout(() => {
+          setVisibleMongo(false)
+        }, 5000)
+        return (() => {
+          clearTimeout(timeoutMongo)
+        })
+      }, [visibleMongo])
+
+      useEffect(() => {
+        const timeoutRubidex = setTimeout(() => {
+          setVisibleRubidex(false)
+        }, 5000)
+        return (() => {
+          clearTimeout(timeoutRubidex)
+        })
+      }, [visibleRubidex])
     
 
     return <>
@@ -114,8 +156,20 @@ const Insert = () => {
                 </Button>
             </Form.Item>
         </Form>
-        <h2>{confirmation.acknowledged}</h2>
-        <p>{confirmation.insertedId}</p>
+        {visibleMongo && <Confirmation
+          system="MongoDb"
+          success={confirmationMongo.acknowledged}
+          message={`Inserted Id: ${confirmationMongo.insertedId}`}
+
+        
+        ></Confirmation>}
+        {visibleRubidex && <Confirmation
+          system="Rubidex"
+          success={confirmationRubidex.acknowledged}
+          message={`Rudidex received the following object: ${JSON.stringify(confirmationRubidex.receivedObject)}`}
+
+        
+        ></Confirmation>}
     </>
     
 }

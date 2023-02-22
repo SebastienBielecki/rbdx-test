@@ -1,0 +1,9 @@
+.container {
+    /* display: inline-block; */
+    background-color:cadetblue;
+    border-style: solid 1px;
+    border-radius: 0.5rem;
+    margin: 1rem;
+    padding: 1rem;
+    width: 40%;
+}
