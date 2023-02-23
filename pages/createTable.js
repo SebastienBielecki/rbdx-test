@@ -1,7 +1,8 @@
 
 
 import { MinusCircleOutlined, PlusOutlined } from '@ant-design/icons';
-import { Button, Form, Input, Space } from 'antd';
+import { Button, Form, Input, Select, Space, Checkbox } from 'antd';
+const { Option } = Select;
 
 import { useState} from "react"
 import Confirmation from '../components/confirmation';
@@ -60,74 +61,141 @@ const Insert = () => {
       //   setConfirmation(result)
       // };
 
-    const onFinish = async (values) => {
-        const datatoSend = {
-          tableName,
-          fields: values
-        }
-        const result = await postData('/api/createTable', datatoSend)
-        setConfirmation(result)
-    }
 
-    const onFinishTableName = (values) => {
-        setTableName(values.tableName)
-    }
-      
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-    }
+      const [form] = Form.useForm();
+      const onFinish = async (values) => {
+        console.log('Received values of form:', values);
+        const result = await postData("./api/rubidex/createTable", values)
+        console.log(result);
+        setConfirmation(result)
+      };
+      const handleChange = () => {
+        form.setFieldsValue({
+          sights: [],
+        });
+      };
 
    
 
     return <>
-        <h2 className={styles.title}>Create a collection</h2>
+        <h2 className={styles.title}>Create a collection / table</h2>
+        <div className='instructions'>
+          <p>Define the collection / name</p>
+          <p>Optionally, define a schema, e.g. fields name and attributes</p>
+        </div>
+        
         <Form
-          name="basic"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 16 }}
-          style={{ maxWidth: 600 }}
-          initialValues={{ remember: true }}
-          onFinish={onFinishTableName}
-          onFinishFailed={onFinishFailed}
+          form={form}
+          name="create-collection"
+          onFinish={onFinish}
+          style={{
+            //maxWidth: 600,
+          }}
           autoComplete="off"
         >
           <Form.Item
-            label="Table name"
-            name="tableName"
-            rules={[{ required: true, message: 'Please input the table name!' }]}
+            name="collection-name"
+            label="Collection name"
+            rules={[
+              {
+                required: true,
+                message: 'Missing collection name',
+              },
+            ]}
           >
-            <Input />
+            <Input></Input>
+            {/* <Select options={areas} onChange={handleChange} /> */}
           </Form.Item>
-          <Form.Item wrapperCol={{ offset: 8, span: 16 }}>
-            <Button type="primary" htmlType="submit">
-              Submit
-            </Button>
-          </Form.Item>
-        </Form>
-        {tableName && <Form
-          name="dynamic_form_nest_item"
-          onFinish={onFinish}
-          style={{ maxWidth: 600 }}
-          autoComplete="off"
-        >
-          <Form.List name={tableName}>
+          <Form.List name="fields">
             {(fields, { add, remove }) => (
               <>
-                {fields.map(({ key, name, ...restField }) => (
-                  <Space key={key} style={{ display: 'flex', marginBottom: 8 }} align="baseline">
+                {fields.map((field) => (
+                  <Space key={field.key} align="baseline">
+                    <MinusCircleOutlined onClick={() => remove(field.name)} />
                     <Form.Item
-                      {...restField}
-                      name={[name, 'fieldName']}
-                      rules={[{ required: true, message: 'Missing field name' }]}
+                      {...field}
+                      label="Field name"
+                      name={[field.name, 'field-name']}
+                      rules={[
+                        {
+                          required: true,
+                          message: 'Missing field name',
+                        },
+                      ]}
                     >
-                      <Input placeholder="Field Name" />
+                      <Input />
                     </Form.Item>
-                    <MinusCircleOutlined onClick={() => remove(name)} />
+                    <Form.Item
+                      {...field}
+                      name={[field.name, "type"]}
+                      label="Type"
+                      //hasFeedback
+                      rules={[
+                          {
+                          required: true,
+                          message: 'Please select your country!',
+                          },
+                      ]}
+                      >
+                          <Select placeholder="Data type">
+                              <Option value="integer">Integer</Option>
+                              <Option value="decimal">Decimal</Option>
+                              <Option value="string">String</Option>
+                              <Option value="bool">Boolean</Option>
+                          </Select>
+                    </Form.Item>
+                    <Form.Item
+                      {...field}
+                      name={[field.name, "mandatory"]}
+                      valuePropName="checked"
+                      // wrapperCol={{
+                      //     offset: 8,
+                      //     span: 16,
+                      // }}
+                      >
+                      <Checkbox>Mandatory</Checkbox>
+                    </Form.Item>
+                    <Form.Item
+                      {...field}
+                      name={[field.name, "unique"]}
+                      valuePropName="checked"
+                      // wrapperCol={{
+                      //     offset: 8,
+                      //     span: 16,
+                      // }}
+                      >
+                      <Checkbox>Unique</Checkbox>
+                    </Form.Item>
+                    <Form.Item
+                      {...field}
+                      name={[field.name, "autoIncrement"]}
+                      valuePropName="checked"
+                      // wrapperCol={{
+                      //     offset: 8,
+                      //     span: 16,
+                      // }}
+                      >
+                      <Checkbox>Auto-increment</Checkbox>
+                    </Form.Item>
+                    <Form.Item
+                      {...field}
+                      name={[field.name, "indexed"]}
+                      valuePropName="checked"
+                      // wrapperCol={{
+                      //     offset: 8,
+                      //     span: 16,
+                      // }}
+                      >
+                      <Checkbox>indexed</Checkbox>
+                    </Form.Item>
+
+                    
                   </Space>
                 ))}
+
                 <Form.Item>
                   <Button type="dashed" onClick={() => add()} block icon={<PlusOutlined />}>
-                    Add field
+                    Add fields
                   </Button>
                 </Form.Item>
               </>
@@ -138,9 +206,9 @@ const Insert = () => {
               Submit
             </Button>
           </Form.Item>
-        </Form>}
+        </Form>
         <Confirmation
-          system="MongoDb"
+          system="Rubidex API answer"
           success={true}
           message={JSON.stringify(confirmation)}
         ></Confirmation>

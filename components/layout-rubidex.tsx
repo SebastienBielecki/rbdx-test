@@ -56,7 +56,7 @@ const LayoutRubidex: React.FC<{ children: any }> = (props) => {
         <Content style={{ margin: '0 16px' }}>
           {props.children}
         </Content>
-        <Footer style={{ textAlign: 'center' }}>Ant Design ©2023 Created by Ant UED</Footer>
+        <Footer style={{ textAlign: 'center' }}>Rubidex ©2023</Footer>
       </Layout>
     </Layout>
   );

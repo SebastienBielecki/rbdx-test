@@ -105,3 +105,16 @@ a {
     color-scheme: dark;
   }
 }
+
+.page-title {
+  margin: 2rem;
+}
+
+.page-container {
+  padding: 1rem;
+  padding-top: 2rem;
+}
+
+.instructions {
+  margin-bottom: 2rem;
+}
